@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PILPOIL — Enfin une maison sans poils</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="sections1.jsx"></script>
+<script type="text/babel" src="sections2.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "sage",
+  "displayFont": "Instrument Serif",
+  "uiFont": "Plus Jakarta Sans",
+  "radius": 28,
+  "stickyAtc": true,
+  "darkFooter": true,
+  "announce": true
+}/*EDITMODE-END*/;
+
+const PALETTES = {
+  sage: { warm:"#FAF7F0", cream:"#F1EADA", cream2:"#E8DFC9", sage:"#9DAE8D", sage2:"#B7C4A7", moss:"#5C6B4F", ink:"#1F1E1B" },
+  clay: { warm:"#FAF6F1", cream:"#F1E4D7", cream2:"#E8D4BD", sage:"#C49E80", sage2:"#D9BDA4", moss:"#7A4F36", ink:"#241D17" },
+  lilac:{ warm:"#FAF7FA", cream:"#EDE3EE", cream2:"#DECDDE", sage:"#A893B5", sage2:"#C5B5CE", moss:"#5E4A6B", ink:"#1F1A24" },
+  fog:  { warm:"#F7F8F8", cream:"#E5E8EA", cream2:"#D2D8DC", sage:"#8FA3AD", sage2:"#B0BFC6", moss:"#475761", ink:"#1A1D1F" },
+};
+
+function applyTweaks(t){
+  const root = document.documentElement;
+  const p = PALETTES[t.palette] || PALETTES.sage;
+  root.style.setProperty("--warm-white", p.warm);
+  root.style.setProperty("--cream", p.cream);
+  root.style.setProperty("--cream-2", p.cream2);
+  root.style.setProperty("--sage", p.sage);
+  root.style.setProperty("--sage-2", p.sage2);
+  root.style.setProperty("--moss", p.moss);
+  root.style.setProperty("--ink", t.darkFooter ? p.ink : p.moss);
+  root.style.setProperty("--ink-2", p.ink);
+  root.style.setProperty("--font-display", `'${t.displayFont}', ui-serif, Georgia, serif`);
+  root.style.setProperty("--font-ui", `'${t.uiFont}', ui-sans-serif, system-ui, -apple-system, sans-serif`);
+  root.style.setProperty("--r-lg", `${t.radius}px`);
+  root.style.setProperty("--r-xl", `${Math.round(t.radius*1.45)}px`);
+}
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  useEffect(()=>applyTweaks(t),[t]);
+
+  const [qty, setQty] = useState(1);
+  const [color, setColor] = useState("sage");
+  const [cartCount, setCartCount] = useState(0);
+  const [stickyVisible, setStickyVisible] = useState(false);
+  const [toast, setToast] = useState(null);
+  const productRef = useRef(null);
+
+  useEffect(()=>{
+    const onScroll = () => {
+      if (!productRef.current) return;
+      const r = productRef.current.getBoundingClientRect();
+      // show sticky atc when product section has scrolled past
+      const passedBelow = r.bottom < window.innerHeight * 0.4;
+      const beforeProduct = r.top > window.innerHeight;
+      setStickyVisible(t.stickyAtc && (passedBelow || beforeProduct) && window.scrollY > 600);
+    };
+    window.addEventListener("scroll", onScroll, {passive:true});
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  },[t.stickyAtc]);
+
+  function addToCart(){
+    setCartCount(c => c + qty);
+    setToast(`${qty} brosse${qty>1?"s":""} ajoutée${qty>1?"s":""} au panier`);
+    setTimeout(()=>setToast(null), 2400);
+  }
+  function scrollToProduct(){
+    productRef.current?.getBoundingClientRect();
+    const top = productRef.current.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({top, behavior:"smooth"});
+  }
+
+  const { Announce, Nav, Hero, ProblemSolution, HowItWorks, Benefits } = window.Sections1;
+  const { Product, Reviews, FAQ, Footer } = window.Sections2;
+
+  return (
+    <div>
+      {t.announce && <Announce/>}
+      <Nav onCart={scrollToProduct} cartCount={cartCount}/>
+      <Hero onCTA={scrollToProduct}/>
+      <ProblemSolution/>
+      <HowItWorks/>
+      <Benefits/>
+      <Product productRef={productRef} qty={qty} setQty={setQty} color={color} setColor={setColor} onAdd={addToCart}/>
+      <Reviews/>
+      <FAQ/>
+      <Footer/>
+
+      {/* sticky add-to-cart */}
+      <div className={`sticky-atc ${stickyVisible?"shown":""}`}>
+        <div>
+          <span className="price">69€ <small style={{color:"rgba(241,234,218,.5)",textDecoration:"line-through",fontWeight:500,fontSize:13,marginLeft:6}}>99€</small></span>
+          <span className="meta">Livraison offerte · sous 30 jours</span>
+        </div>
+        <button onClick={()=>{ addToCart(); }}>
+          Ajouter — {69*qty}€
+        </button>
+      </div>
+
+      {/* toast */}
+      {toast && (
+        <div style={{position:"fixed",left:"50%",top:80,transform:"translateX(-50%)",zIndex:60,
+          background:"var(--moss)",color:"var(--warm-white)",padding:"12px 20px",borderRadius:999,
+          boxShadow:"var(--shadow-md)",fontWeight:600,fontSize:14,display:"flex",alignItems:"center",gap:8}}>
+          <Ic.Check/> {toast}
+        </div>
+      )}
+
+      <TweaksPanel title="PILPOIL — Tweaks">
+        <TweakSection label="Palette"/>
+        <TweakColor label="Ambiance" value={t.palette}
+          options={[
+            { value:"sage",  swatch:["#9DAE8D","#F1EADA","#1F1E1B"] },
+            { value:"clay",  swatch:["#C49E80","#F1E4D7","#241D17"] },
+            { value:"lilac", swatch:["#A893B5","#EDE3EE","#1F1A24"] },
+            { value:"fog",   swatch:["#8FA3AD","#E5E8EA","#1A1D1F"] },
+          ].map(p => p.swatch)}
+          onChange={(v) => {
+            const map = {"#9DAE8D":"sage","#C49E80":"clay","#A893B5":"lilac","#8FA3AD":"fog"};
+            // value comes back as array [first,...]; first color identifies palette
+            const key = Array.isArray(v) ? map[v[0]] : v;
+            setTweak("palette", key || "sage");
+          }}
+        />
+        <TweakSection label="Typographie"/>
+        <TweakRadio label="Display" value={t.displayFont}
+          options={["Instrument Serif","Fraunces","Plus Jakarta Sans"]}
+          onChange={(v)=>setTweak("displayFont", v)} />
+        <TweakRadio label="UI" value={t.uiFont}
+          options={["Plus Jakarta Sans","DM Sans"]}
+          onChange={(v)=>setTweak("uiFont", v)} />
+        <TweakSection label="Forme"/>
+        <TweakSlider label="Arrondis" value={t.radius} min={8} max={48} unit="px"
+          onChange={(v)=>setTweak("radius", v)} />
+        <TweakSection label="Conversion"/>
+        <TweakToggle label="Sticky add-to-cart" value={t.stickyAtc} onChange={(v)=>setTweak("stickyAtc", v)}/>
+        <TweakToggle label="Barre d'annonce" value={t.announce} onChange={(v)=>setTweak("announce", v)}/>
+        <TweakToggle label="Footer foncé" value={t.darkFooter} onChange={(v)=>setTweak("darkFooter", v)}/>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App/>);
+</script>
+</body>
+</html>
