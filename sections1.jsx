@@ -108,9 +108,9 @@ function Hero({ onCTA }) {
 // ---------------- Problem / Solution ----------------
 function ProblemSolution() {
   const items = [
-    { title:"Le canapé", note:"avant / après" },
-    { title:"Les vêtements", note:"avant / après" },
-    { title:"La voiture", note:"avant / après" },
+    { title:"Le canapé", note:"avant / après", img:"uploads/IMG_3450.png" },
+    { title:"Les vêtements", note:"avant / après", img:"uploads/IMG_3451.png" },
+    { title:"La voiture", note:"avant / après", img:"uploads/IMG_3452.png" },
   ];
   return (
     <section className="section problem">

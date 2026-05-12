@@ -1,0 +1,354 @@
+{{ 'pilpoil.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign price = section.settings.price | default: 69
+  assign price_old = section.settings.price_old | default: 99
+  assign variant_id = section.settings.variant_id
+  assign img_canape = section.settings.img_canape
+  assign img_vetements = section.settings.img_vetements
+  assign img_voiture = section.settings.img_voiture
+  assign hero_img = section.settings.hero_img
+-%}
+
+<div id="pilpoil"
+     data-price="{{ price }}"
+     data-variant-id="{{ variant_id }}">
+
+  {% if section.settings.show_announce %}
+  <div class="announce">
+    <div class="container announce-track">
+      <span>{{ section.settings.announce_1 | default: 'Livraison offerte dès 49€' }}</span><span class="dot"></span>
+      <span>{{ section.settings.announce_2 | default: 'Satisfait ou remboursé 30 jours' }}</span><span class="dot"></span>
+      <span>{{ section.settings.announce_3 | default: '+12 000 maisons sans poils' }}</span><span class="dot"></span>
+      <span>{{ section.settings.announce_4 | default: 'Garantie 2 ans' }}</span>
+    </div>
+  </div>
+  {% endif %}
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="brand" style="text-decoration:none;color:inherit">
+        <span class="brand-mark">{% render 'pilpoil-icon', n: 'paw' %}</span>
+        <span>PILPOIL</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#produit">La brosse</a>
+        <a href="#fonctionne">Comment ça marche</a>
+        <a href="#avis">Avis clients</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="Recherche">{% render 'pilpoil-icon', n: 'search' %}</button>
+        <button class="icon-btn" aria-label="Compte">{% render 'pilpoil-icon', n: 'user' %}</button>
+        <button class="cart-pill" data-pp-cta-product>
+          {% render 'pilpoil-icon', n: 'bag' %} Panier
+          <span class="badge" data-pp-cart-count>0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="tag">{% render 'pilpoil-icon', n: 'paw' %} Pour chats &amp; chiens</span>
+        <h1 class="display">Enfin une<br> maison <em>sans poils.</em></h1>
+        <p class="sub">La brosse vapeur qui retire les poils <em>avant</em> qu'ils tombent partout. Douce pour votre animal, redoutable contre les poils.</p>
+        <div class="hero-cta-row">
+          <button class="btn btn-primary" data-pp-cta-product>Découvrir PILPOIL {% render 'pilpoil-icon', n: 'arrow' %}</button>
+          <div class="stars">
+            <div class="star-row">
+              {% for i in (1..5) %}{% render 'pilpoil-icon', n: 'star' %}{% endfor %}
+            </div>
+            <span><b>4,9/5</b> · 2 134 avis</span>
+          </div>
+        </div>
+        <div class="trust">
+          <div class="trust-item"><span class="b">{% render 'pilpoil-icon', n: 'truck' %}</span>Livraison offerte<br><small style="color:var(--mute)">en 2-4 jours</small></div>
+          <div class="trust-item"><span class="b">{% render 'pilpoil-icon', n: 'shield' %}</span>30 jours d'essai<br><small style="color:var(--mute)">satisfait ou remboursé</small></div>
+          <div class="trust-item"><span class="b">{% render 'pilpoil-icon', n: 'leaf' %}</span>Réutilisable<br><small style="color:var(--mute)">zéro recharge</small></div>
+          <div class="trust-item"><span class="b">{% render 'pilpoil-icon', n: 'heart' %}</span>Vétérinaires<br><small style="color:var(--mute)">recommandé par 9/10</small></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        {% if hero_img %}
+          <img src="{{ hero_img | image_url: width: 1200 }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        {% else %}
+          <div class="placeholder"><span class="placeholder-tag">photo lifestyle — femme + chat + brosse</span></div>
+        {% endif %}
+        <div class="steam s1"></div>
+        <div class="steam s2"></div>
+        <div class="float-card fc-1"><span class="ico">{% render 'pilpoil-icon', n: 'sparkles' %}</span><div>-87% de poils<br><small>en 2 minutes</small></div></div>
+        <div class="float-card fc-2"><span class="ico">{% render 'pilpoil-icon', n: 'heart' %}</span><div>Anissa &amp; Mochi<br><small>“On adore!”</small></div></div>
+        <div class="float-card fc-3"><span class="ico">{% render 'pilpoil-icon', n: 'steam' %}</span><div>Vapeur tiède<br><small>douce pour le pelage</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section problem">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Le quotidien sans PILPOIL</span>
+        <h2 class="display">Les poils, partout.<br>Sauf chez vous.</h2>
+        <p>Glissez le curseur — voyez la différence sur les surfaces où les poils s'accumulent le plus.</p>
+      </div>
+      <div class="compare-grid">
+        {%- assign cards = 'Le canapé|Les vêtements|La voiture' | split: '|' -%}
+        {%- assign imgs = '' | split: ',' -%}
+        {%- if img_canape -%}{%- assign url1 = img_canape | image_url: width: 900 -%}{%- else -%}{%- assign url1 = '' -%}{%- endif -%}
+        {%- if img_vetements -%}{%- assign url2 = img_vetements | image_url: width: 900 -%}{%- else -%}{%- assign url2 = '' -%}{%- endif -%}
+        {%- if img_voiture -%}{%- assign url3 = img_voiture | image_url: width: 900 -%}{%- else -%}{%- assign url3 = '' -%}{%- endif -%}
+        {%- assign urls = url1 | append: '||' | append: url2 | append: '||' | append: url3 | split: '||' -%}
+        {%- for title in cards -%}
+          {%- assign u = urls[forloop.index0] -%}
+          <div class="compare-card">
+            <div class="ba"
+              {% if u != blank %}style="background-image:url('{{ u }}');background-size:cover;background-position:center"{% endif %}>
+              <div class="half before"
+                {% if u != blank %}style="background-image:url('{{ u }}');background-size:cover;background-position:center;filter:grayscale(.85) brightness(.78) contrast(1.05)"{% endif %}>
+                <span style="position:absolute;top:14px;left:14px;background:rgba(31,30,27,.7);color:#FAF7F0;border-radius:999px;padding:4px 10px;font-size:11px;letter-spacing:.06em">AVANT</span>
+              </div>
+              <div class="half after" style="{% if u != blank %}background-image:url('{{ u }}');background-size:cover;background-position:center;{% endif %}clip-path:polygon(50% 0,100% 0,100% 100%,50% 100%)">
+                <span style="position:absolute;top:14px;right:14px;background:var(--sage);color:#FAF7F0;border-radius:999px;padding:4px 10px;font-size:11px;letter-spacing:.06em">APRÈS</span>
+              </div>
+              <div class="divider" style="left:50%"></div>
+              <div class="handle" style="left:50%">{% render 'pilpoil-icon', n: 'slider' %}</div>
+            </div>
+            <div class="compare-meta"><h4>{{ title }}</h4><span>avant / après</span></div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="affirm-row">
+        <div class="affirm display">Moins de <em>poils.</em></div>
+        <div class="affirm display">Moins de <em>stress.</em></div>
+        <div class="affirm display">Plus de <em>câlins.</em></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fonctionne">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Comment ça marche</span>
+        <h2 class="display">Trois gestes, zéro effort.</h2>
+        <p>Pas d'aspirateur, pas de rouleau collant, pas d'huile de coude. Juste vous et votre animal.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="ico-art">{% render 'pilpoil-icon', n: 'steam' %}</div><div class="num display">01</div><h3>Activez la vapeur</h3><p>Un bouton, deux secondes. La vapeur tiède s'active doucement, sans bruit qui effraie.</p></div>
+        <div class="step"><div class="ico-art">{% render 'pilpoil-icon', n: 'brush' %}</div><div class="num display">02</div><h3>Brossez votre animal</h3><p>Glissez la brosse comme une caresse. La vapeur capture les poils morts avant qu'ils ne tombent.</p></div>
+        <div class="step"><div class="ico-art">{% render 'pilpoil-icon', n: 'sparkles' %}</div><div class="num display">03</div><h3>Retirez les poils en 1 clic</h3><p>Le tiroir s'ouvre d'une pression, se vide d'un geste, se rince à l'eau. C'est tout.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section benefits">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pourquoi PILPOIL</span>
+        <h2 class="display">Pensée pour vous,<br>aimée par eux.</h2>
+      </div>
+      <div class="bens-grid">
+        <div class="ben sage"><span class="ico">{% render 'pilpoil-icon', n: 'brush' %}</span><h4>Retire les poils à la source</h4></div>
+        <div class="ben"><span class="ico">{% render 'pilpoil-icon', n: 'home' %}</span><h4>Réduit les poils dans la maison</h4></div>
+        <div class="ben"><span class="ico">{% render 'pilpoil-icon', n: 'cat' %}</span><h4>Convient chats &amp; chiens</h4></div>
+        <div class="ben"><span class="ico">{% render 'pilpoil-icon', n: 'sparkles' %}</span><h4>Nettoyage facile au robinet</h4></div>
+        <div class="ben dark"><span class="ico">{% render 'pilpoil-icon', n: 'heart' %}</span><h4>Animal détendu</h4></div>
+        <div class="ben"><span class="ico">{% render 'pilpoil-icon', n: 'recycle' %}</span><h4>Réutilisable à l'infini</h4></div>
+        <div class="ben"><span class="ico">{% render 'pilpoil-icon', n: 'leaf' %}</span><h4>Sans recharge collante</h4></div>
+        <div class="ben"><span class="ico">{% render 'pilpoil-icon', n: 'steam' %}</span><h4>Vapeur tiède, jamais chaude</h4></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="produit" style="background:var(--warm-white)">
+    <div class="container product-grid">
+      <div class="product-gallery">
+        <div class="gallery-main">
+          <div class="ph"><div class="product-mark"></div></div>
+          <span style="position:absolute;top:16px;left:16px" class="tag">{% render 'pilpoil-icon', n: 'leaf' %} Édition 2026</span>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="thumb t1 active" data-pp-thumb></div>
+          <div class="thumb t2" data-pp-thumb></div>
+          <div class="thumb t3" data-pp-thumb></div>
+          <div class="thumb t4" data-pp-thumb></div>
+        </div>
+      </div>
+      <div class="product-info">
+        <span class="small">PILPOIL · Édition originale</span>
+        <h2 class="display">La brosse vapeur.</h2>
+        <div class="product-rating">
+          <div class="star-row" style="display:flex;color:#D9A441;gap:1px">
+            {% for i in (1..5) %}{% render 'pilpoil-icon', n: 'star' %}{% endfor %}
+          </div>
+          <span><b>4,9</b> · 2 134 avis vérifiés</span>
+        </div>
+        <p style="color:var(--ink-2);font-size:16px;margin:6px 0 0;max-width:46ch">Une brosse en alliage doux, un réservoir d'eau de 30ml, et une vapeur tiède qui capture les poils morts avant qu'ils ne tombent partout.</p>
+        <div class="price-row">
+          <span class="price">{{ price }}€</span>
+          <span class="price-old">{{ price_old }}€</span>
+          <span class="price-save">-{{ price_old | minus: price | times: 100 | divided_by: price_old }}%</span>
+        </div>
+        <div class="color-select">
+          <div style="font-size:13.5px;font-weight:600;color:var(--ink-2)">Couleur : <span style="color:var(--ink)" data-pp-color-label>Sauge</span></div>
+          <div class="color-swatches">
+            <button class="swatch sage active" data-pp-swatch="sage" data-pp-label="Sauge" aria-label="Sauge"></button>
+            <button class="swatch cream" data-pp-swatch="cream" data-pp-label="Crème" aria-label="Crème"></button>
+            <button class="swatch charcoal" data-pp-swatch="charcoal" data-pp-label="Charbon" aria-label="Charbon"></button>
+          </div>
+        </div>
+        <div class="qty-row">
+          <div style="font-size:13.5px;font-weight:600;color:var(--ink-2)">Quantité</div>
+          <div class="qty">
+            <button data-pp-qty-dec>−</button>
+            <span class="n" data-pp-qty>1</span>
+            <button data-pp-qty-inc>+</button>
+          </div>
+        </div>
+        <div class="add-row">
+          <button class="btn btn-primary" data-pp-add>Ajouter au panier · <span data-pp-total>{{ price }}€</span> {% render 'pilpoil-icon', n: 'arrow' %}</button>
+          <button class="icon-btn" aria-label="Favori" style="width:54px;height:54px">{% render 'pilpoil-icon', n: 'heart' %}</button>
+        </div>
+        <div class="product-mini-revs">
+          <div class="mini-rev-avatars"><span>JL</span><span>MR</span><span>AC</span><span>+</span></div>
+          <span style="font-size:13px;color:var(--ink-2)">Rejoignez <b style="color:var(--ink)">12 480 foyers</b> qui ont dit adieu aux poils.</span>
+        </div>
+        <ul class="assurance-list">
+          <li>{% render 'pilpoil-icon', n: 'truck' %} Livraison offerte en 2–4 jours ouvrés</li>
+          <li>{% render 'pilpoil-icon', n: 'shield' %} 30 jours pour l'essayer, sinon remboursé</li>
+          <li>{% render 'pilpoil-icon', n: 'recycle' %} Garantie 2 ans, pièces détachées disponibles</li>
+          <li>{% render 'pilpoil-icon', n: 'leaf' %} Conçu en France · assemblé au Portugal</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="avis" style="background:var(--warm-white)">
+    <div class="container">
+      <div class="reviews-head">
+        <div class="left"><span class="eyebrow">Ils ont essayé</span><h2 class="display">2 134 avis.<br>Une seule réaction.</h2></div>
+        <div class="summary">
+          <div>
+            <div class="big-rating display">4,9<span style="color:var(--mute);font-size:18px">/5</span></div>
+            <div class="star-row" style="display:flex;color:#D9A441;gap:1px;margin-top:4px">
+              {% for i in (1..5) %}{% render 'pilpoil-icon', n: 'star' %}{% endfor %}
+            </div>
+            <small>Sur 2 134 avis vérifiés</small>
+          </div>
+        </div>
+      </div>
+      <div class="reviews-grid">
+        {%- assign revs = 'Marie L.|avec Tigrou|Mon chat ronronne pendant le brossage, et plus de poils sur le canapé noir. Magique.|1|0;Julien R.|avec Mochi|J''étais sceptique. 3 semaines plus tard, le rouleau collant a disparu de ma vie.|2|1;Camille D.|avec Nuage|La vapeur est douce, vraiment. Mon chat très peureux se laisse faire.|3|0;Antoine B.|avec Luna & Mia|Deux chats, un labrador. La maison respire à nouveau.|4|1' | split: ';' -%}
+        {%- for r in revs -%}
+          {%- assign p = r | split: '|' -%}
+          <div class="rev-card">
+            <div class="rev-media r{{ p[3] }}{% if p[4] == '1' %} video{% endif %}"><div class="ph">photo {{ p[1] | remove: 'avec ' }}</div></div>
+            <div class="rev-body">
+              <div class="rev-stars">{% for i in (1..5) %}{% render 'pilpoil-icon', n: 'star' %}{% endfor %}</div>
+              <p class="rev-text">“{{ p[2] }}”</p>
+              <div class="rev-name"><span>{{ p[0] }}</span><small>{{ p[1] }}</small></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">On vous dit tout</span><h2 class="display">Vos questions, nos réponses.</h2></div>
+      <div class="faq-list">
+        {%- assign faqs = 'Est-ce que ça fonctionne sur les chats ?|Oui — testée sur poils courts et poils longs. La plupart des chats trouvent le brossage apaisant.;Et sur les chiens ?|Du chihuahua au berger australien, oui. Pour les poils très longs, brossez par sections de 20 secondes.;La vapeur est-elle chaude ?|Non. La vapeur sort à environ 38°C — tiède comme l''eau du bain.;Quand serai-je livré·e ?|Livraison offerte en 2 à 4 jours ouvrés en France métropolitaine via Colissimo.;Comment nettoyer la brosse ?|Le tiroir à poils se vide en un geste. Le réservoir et la brosse se rincent à l''eau tiède.;Et si je n''aime pas ?|Vous avez 30 jours pour la tester chez vous. Si elle ne vous convient pas, on la reprend et on vous rembourse.' | split: ';' -%}
+        {%- for f in faqs -%}
+          {%- assign qa = f | split: '|' -%}
+          <div class="faq-item{% if forloop.first %} open{% endif %}">
+            <div class="faq-q"><span>{{ qa[0] }}</span><span class="plus">{% render 'pilpoil-icon', n: 'plus' %}</span></div>
+            <div class="faq-a">{{ qa[1] }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div style="text-align:center;margin-top:36px">
+        <span style="color:var(--ink-2);font-size:15px">Une autre question ? </span>
+        <a href="#" style="color:var(--moss);font-weight:600">Écrivez-nous →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand"><span class="brand-mark">{% render 'pilpoil-icon', n: 'paw' %}</span><span>PILPOIL</span></div>
+          <p class="footer-tag">La brosse vapeur qui rend les maisons douces et les animaux heureux. Conçue à Paris, aimée partout.</p>
+          <div class="foot-social">
+            <a href="#" aria-label="Instagram">{% render 'pilpoil-icon', n: 'insta' %}</a>
+            <a href="#" aria-label="TikTok">{% render 'pilpoil-icon', n: 'tiktok' %}</a>
+            <a href="#" aria-label="Email">{% render 'pilpoil-icon', n: 'mail' %}</a>
+          </div>
+        </div>
+        <div><h5>Boutique</h5><a href="#">La brosse vapeur</a><a href="#">Accessoires</a><a href="#">Cartes cadeaux</a><a href="#">Recharges (gratuit)</a></div>
+        <div><h5>Aide</h5><a href="#">Suivre ma commande</a><a href="#">Livraison</a><a href="#">Retours &amp; remboursement</a><a href="#">Contact</a></div>
+        <div><h5>La marque</h5><a href="#">Notre histoire</a><a href="#">Avis vérifiés</a><a href="#">Affiliation</a><a href="#">Vétérinaires partenaires</a></div>
+      </div>
+      <div class="footer-bar">
+        <span>© {{ 'now' | date: '%Y' }} PILPOIL — Tous droits réservés</span>
+        <span style="display:flex;gap:18px">
+          <a href="#" style="padding:0">CGV</a><a href="#" style="padding:0">Mentions légales</a>
+          <a href="#" style="padding:0">Politique de retour</a><a href="#" style="padding:0">Cookies</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  {% if section.settings.sticky_atc %}
+  <div class="sticky-atc">
+    <div>
+      <span class="price">{{ price }}€ <small style="color:rgba(241,234,218,.5);text-decoration:line-through;font-weight:500;font-size:13px;margin-left:6px">{{ price_old }}€</small></span>
+      <span class="meta">Livraison offerte · sous 30 jours</span>
+    </div>
+    <button data-pp-add>Ajouter — <span data-pp-total>{{ price }}€</span></button>
+  </div>
+  {% endif %}
+
+  <div data-pp-toast style="position:fixed;left:50%;top:80px;transform:translateX(-50%) translateY(-20px);
+    z-index:60;background:var(--moss);color:var(--warm-white);padding:12px 20px;border-radius:999px;
+    box-shadow:var(--shadow-md);font-weight:600;font-size:14px;opacity:0;pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;font-family:var(--font-ui)"></div>
+</div>
+
+<style>
+  #pilpoil [data-pp-toast].shown{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+</style>
+
+{{ 'pilpoil.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "PILPOIL Landing",
+  "settings": [
+    { "type": "header", "content": "Prix" },
+    { "type": "number", "id": "price", "label": "Prix actuel (€)", "default": 69 },
+    { "type": "number", "id": "price_old", "label": "Prix barré (€)", "default": 99 },
+    { "type": "text", "id": "variant_id", "label": "Variant ID Shopify (optionnel — connecte le bouton « Ajouter au panier »)" },
+    { "type": "header", "content": "Annonce" },
+    { "type": "checkbox", "id": "show_announce", "label": "Afficher la barre d'annonce", "default": true },
+    { "type": "text", "id": "announce_1", "label": "Annonce 1", "default": "Livraison offerte dès 49€" },
+    { "type": "text", "id": "announce_2", "label": "Annonce 2", "default": "Satisfait ou remboursé 30 jours" },
+    { "type": "text", "id": "announce_3", "label": "Annonce 3", "default": "+12 000 maisons sans poils" },
+    { "type": "text", "id": "announce_4", "label": "Annonce 4", "default": "Garantie 2 ans" },
+    { "type": "header", "content": "Images Hero & Avant/Après" },
+    { "type": "image_picker", "id": "hero_img", "label": "Image hero" },
+    { "type": "image_picker", "id": "img_canape", "label": "Avant/Après — Canapé" },
+    { "type": "image_picker", "id": "img_vetements", "label": "Avant/Après — Vêtements" },
+    { "type": "image_picker", "id": "img_voiture", "label": "Avant/Après — Voiture" },
+    { "type": "header", "content": "Conversion" },
+    { "type": "checkbox", "id": "sticky_atc", "label": "Barre sticky Add-to-cart", "default": true }
+  ],
+  "presets": [
+    { "name": "PILPOIL Landing" }
+  ]
+}
+{% endschema %}

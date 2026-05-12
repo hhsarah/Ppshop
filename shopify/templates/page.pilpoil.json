@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "pilpoil-landing",
+      "settings": {
+        "price": 69,
+        "price_old": 99,
+        "show_announce": true,
+        "sticky_atc": true
+      }
+    }
+  },
+  "order": ["main"]
+}
