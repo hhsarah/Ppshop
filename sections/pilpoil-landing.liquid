@@ -1,0 +1,464 @@
+{{ 'pilpoil.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pilpoil.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign product = all_products[section.settings.product]
+  assign hero_image = section.settings.hero_image
+  assign palette = section.settings.palette
+  assign dark_footer = section.settings.dark_footer
+  assign sticky_atc = section.settings.sticky_atc
+  assign show_announce = section.settings.show_announce
+-%}
+
+{%- capture ic_paw -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="9" r="1.6"/><circle cx="10" cy="6" r="1.6"/><circle cx="14" cy="6" r="1.6"/><circle cx="18" cy="9" r="1.6"/><path d="M7.5 16c0-3 2-5 4.5-5s4.5 2 4.5 5c0 2.2-1.8 3-3.2 2.2-.8-.5-1.8-.5-2.6 0-1.4.8-3.2 0-3.2-2.2Z"/></svg>{%- endcapture -%}
+{%- capture ic_star -%}<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="m12 2 2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.1 1.3-6.6L2.5 8.9l6.6-.8L12 2Z"/></svg>{%- endcapture -%}
+{%- capture ic_arrow -%}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>{%- endcapture -%}
+{%- capture ic_truck -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>{%- endcapture -%}
+{%- capture ic_shield -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v6c0 4.4 3 7.7 7 9 4-1.3 7-4.6 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>{%- endcapture -%}
+{%- capture ic_leaf -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c0 8-5 14-13 14-2 0-3-1-3-3C4 7 10 4 20 4Z"/><path d="M4 20c4-4 8-8 14-12"/></svg>{%- endcapture -%}
+{%- capture ic_heart -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-9-9c-1.4-3.3 1-7 4.5-7 1.9 0 3.4 1 4.5 2.5C13.1 5 14.6 4 16.5 4 20 4 22.4 7.7 21 11c-2 4.7-9 9-9 9Z"/></svg>{%- endcapture -%}
+{%- capture ic_steam -%}<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4c0 2-2 2-2 4s2 2 2 4-2 2-2 4"/><path d="M12 4c0 2-2 2-2 4s2 2 2 4-2 2-2 4"/><path d="M17 4c0 2-2 2-2 4s2 2 2 4-2 2-2 4"/></svg>{%- endcapture -%}
+{%- capture ic_brush -%}<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="6" rx="2"/><path d="M7 15v3M10 15v3M13 15v3M16 15v3M9 9V6a3 3 0 0 1 6 0v3"/></svg>{%- endcapture -%}
+{%- capture ic_sparkles -%}<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v4M12 16v4M4 12h4M16 12h4M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg>{%- endcapture -%}
+{%- capture ic_home -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>{%- endcapture -%}
+{%- capture ic_recycle -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7 4 10l3 3M17 17l3-3-3-3M4 10h11M20 14H9"/></svg>{%- endcapture -%}
+{%- capture ic_cat -%}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v6c0 4 3 7 7 7s7-3 7-7V5l-3 3h-8L5 5Z"/><path d="M9.5 12h.01M14.5 12h.01M11 15c.5.5 1.5.5 2 0"/></svg>{%- endcapture -%}
+{%- capture ic_bag -%}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>{%- endcapture -%}
+{%- capture ic_search -%}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg>{%- endcapture -%}
+{%- capture ic_user -%}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>{%- endcapture -%}
+{%- capture ic_check -%}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg>{%- endcapture -%}
+{%- capture ic_plus -%}<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>{%- endcapture -%}
+{%- capture ic_sliderh -%}<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h6M15 12h6M11 8v8M13 8v8"/></svg>{%- endcapture -%}
+{%- capture ic_insta -%}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/><circle cx="17" cy="7" r=".8" fill="currentColor"/></svg>{%- endcapture -%}
+{%- capture ic_tiktok -%}<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 3v3a4 4 0 0 0 4 4v3a7 7 0 0 1-4-1.3V16a6 6 0 1 1-6-6v3a3 3 0 1 0 3 3V3h3Z"/></svg>{%- endcapture -%}
+{%- capture ic_mail -%}<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>{%- endcapture -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<div class="pilpoil"
+     id="pilpoil-{{ section.id }}"
+     data-palette="{{ palette }}"
+     data-dark-footer="{{ dark_footer }}"
+     data-sticky-atc="{{ sticky_atc }}"
+     data-money-format="{{ shop.money_format | strip_html | escape }}">
+
+  {%- if product -%}
+    <script type="application/json" data-pp-product-json>
+      {
+        "id": {{ product.id | json }},
+        "title": {{ product.title | json }},
+        "variants": [
+          {%- for v in product.variants -%}
+            {
+              "id": {{ v.id }},
+              "title": {{ v.title | json }},
+              "price": {{ v.price }},
+              "available": {{ v.available }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
+
+  {%- if show_announce -%}
+    <div class="pp-announce">
+      <div class="container pp-announce-track">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'announce_item' -%}
+            <span>{{ block.settings.text }}</span>
+            {%- unless forloop.last -%}<span class="dot"></span>{%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <header class="pp-nav">
+    <div class="container pp-nav-inner">
+      <a href="{{ routes.root_url }}" class="pp-brand">
+        <span class="pp-brand-mark">{{ ic_paw }}</span>
+        <span>{{ section.settings.brand_name | default: 'PILPOIL' }}</span>
+      </a>
+      <nav class="pp-nav-links">
+        <a href="#pp-produit-{{ section.id }}">La brosse</a>
+        <a href="#pp-fonctionne-{{ section.id }}">Comment ça marche</a>
+        <a href="#pp-avis-{{ section.id }}">Avis clients</a>
+        <a href="#pp-faq-{{ section.id }}">FAQ</a>
+      </nav>
+      <div class="pp-nav-actions">
+        <button class="pp-icon-btn" aria-label="Recherche" type="button">{{ ic_search }}</button>
+        <a class="pp-icon-btn" href="{{ routes.account_url }}" aria-label="Compte">{{ ic_user }}</a>
+        <a class="pp-cart-pill" href="{{ routes.cart_url }}">
+          {{ ic_bag }} Panier <span class="badge" data-pp-cart-count>{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="pp-hero">
+    <div class="container pp-hero-grid">
+      <div>
+        <span class="pp-tag">{{ ic_paw }} {{ section.settings.hero_tag | default: 'Pour chats & chiens' }}</span>
+        <h1 class="display">{{ section.settings.hero_title | default: 'Enfin une<br> maison <em>sans poils.</em>' }}</h1>
+        <p class="sub">{{ section.settings.hero_sub | default: "La brosse vapeur qui retire les poils avant qu'ils tombent partout. Douce pour votre animal, redoutable contre les poils." }}</p>
+        <div class="pp-hero-cta-row">
+          <button type="button" class="pp-btn pp-btn-primary" data-pp-scroll-product>
+            {{ section.settings.cta_label | default: 'Découvrir PILPOIL' }} {{ ic_arrow }}
+          </button>
+          <div class="pp-stars">
+            <div class="star-row">{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}</div>
+            <span><b>{{ section.settings.rating | default: '4,9/5' }}</b> · {{ section.settings.review_count | default: '2 134 avis' }}</span>
+          </div>
+        </div>
+        <div class="pp-trust">
+          <div class="pp-trust-item"><span class="b">{{ ic_truck }}</span>Livraison offerte<br><small>en 2-4 jours</small></div>
+          <div class="pp-trust-item"><span class="b">{{ ic_shield }}</span>30 jours d'essai<br><small>satisfait ou remboursé</small></div>
+          <div class="pp-trust-item"><span class="b">{{ ic_leaf }}</span>Réutilisable<br><small>zéro recharge</small></div>
+          <div class="pp-trust-item"><span class="b">{{ ic_heart }}</span>Vétérinaires<br><small>recommandé par 9/10</small></div>
+        </div>
+      </div>
+
+      <div class="pp-hero-visual">
+        {%- if hero_image -%}
+          <img src="{{ hero_image | image_url: width: 1200 }}" alt="{{ hero_image.alt | escape }}" loading="lazy" width="800" height="960">
+        {%- else -%}
+          <div class="placeholder"><span class="pp-placeholder-tag">photo lifestyle</span></div>
+        {%- endif -%}
+        <div class="pp-steam s1"></div>
+        <div class="pp-steam s2"></div>
+        <div class="pp-float-card pp-fc-1"><span class="ico">{{ ic_sparkles }}</span><div>-87% de poils<br><small>en 2 minutes</small></div></div>
+        <div class="pp-float-card pp-fc-2"><span class="ico">{{ ic_heart }}</span><div>Anissa &amp; Mochi<br><small>« On adore! »</small></div></div>
+        <div class="pp-float-card pp-fc-3"><span class="ico">{{ ic_steam }}</span><div>Vapeur tiède<br><small>douce pour le pelage</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pp-section pp-problem">
+    <div class="container">
+      <div class="pp-section-head">
+        <span class="eyebrow">Le quotidien sans PILPOIL</span>
+        <h2 class="display">Les poils, partout.<br>Sauf chez vous.</h2>
+        <p>Glissez le curseur — voyez la différence sur les surfaces où les poils s'accumulent le plus.</p>
+      </div>
+      <div class="pp-compare-grid">
+        {%- assign titles = 'Le canapé,Les vêtements,La voiture' | split: ',' -%}
+        {%- for t in titles -%}
+          <div class="pp-compare-card">
+            <div class="pp-ba">
+              <div class="half before"></div>
+              <div class="half after"></div>
+              <span class="label-before">AVANT</span>
+              <span class="label-after">APRÈS</span>
+              <div class="divider"></div>
+              <div class="handle">{{ ic_sliderh }}</div>
+            </div>
+            <div class="pp-compare-meta"><h4>{{ t }}</h4><span>avant / après</span></div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="pp-affirm-row">
+        <div class="pp-affirm display">Moins de <em>poils.</em></div>
+        <div class="pp-affirm display">Moins de <em>stress.</em></div>
+        <div class="pp-affirm display">Plus de <em>câlins.</em></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pp-section" id="pp-fonctionne-{{ section.id }}">
+    <div class="container">
+      <div class="pp-section-head">
+        <span class="eyebrow">Comment ça marche</span>
+        <h2 class="display">Trois gestes, zéro effort.</h2>
+        <p>Pas d'aspirateur, pas de rouleau collant, pas d'huile de coude. Juste vous et votre animal.</p>
+      </div>
+      <div class="pp-steps">
+        <div class="pp-step"><div class="ico-art">{{ ic_steam }}</div><div class="num display">01</div><h3>Activez la vapeur</h3><p>Un bouton, deux secondes. La vapeur tiède s'active doucement, sans bruit qui effraie.</p></div>
+        <div class="pp-step"><div class="ico-art">{{ ic_brush }}</div><div class="num display">02</div><h3>Brossez votre animal</h3><p>Glissez la brosse comme une caresse. La vapeur capture les poils morts avant qu'ils ne tombent.</p></div>
+        <div class="pp-step"><div class="ico-art">{{ ic_sparkles }}</div><div class="num display">03</div><h3>Retirez les poils en 1 clic</h3><p>Le tiroir s'ouvre d'une pression, se vide d'un geste, se rince à l'eau. C'est tout.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pp-section pp-benefits">
+    <div class="container">
+      <div class="pp-section-head">
+        <span class="eyebrow">Pourquoi PILPOIL</span>
+        <h2 class="display">Pensée pour vous,<br>aimée par eux.</h2>
+      </div>
+      <div class="pp-bens-grid">
+        <div class="pp-ben sage"><span class="ico">{{ ic_brush }}</span><h4>Retire les poils à la source</h4></div>
+        <div class="pp-ben"><span class="ico">{{ ic_home }}</span><h4>Réduit les poils dans la maison</h4></div>
+        <div class="pp-ben"><span class="ico">{{ ic_cat }}</span><h4>Convient chats &amp; chiens</h4></div>
+        <div class="pp-ben"><span class="ico">{{ ic_sparkles }}</span><h4>Nettoyage facile au robinet</h4></div>
+        <div class="pp-ben dark"><span class="ico">{{ ic_heart }}</span><h4>Animal détendu</h4></div>
+        <div class="pp-ben"><span class="ico">{{ ic_recycle }}</span><h4>Réutilisable à l'infini</h4></div>
+        <div class="pp-ben"><span class="ico">{{ ic_leaf }}</span><h4>Sans recharge collante</h4></div>
+        <div class="pp-ben"><span class="ico">{{ ic_steam }}</span><h4>Vapeur tiède, jamais chaude</h4></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pp-section" id="pp-produit-{{ section.id }}" data-pp-product>
+    <div class="container pp-product-grid">
+      <div class="pp-product-gallery">
+        <div class="pp-gallery-main">
+          {%- if product and product.featured_image -%}
+            <img data-pp-main-image src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="800" height="800">
+          {%- else -%}
+            <div class="ph"><div class="product-mark"></div></div>
+          {%- endif -%}
+          <span style="position:absolute;top:16px;left:16px" class="pp-tag">{{ ic_leaf }} Édition 2026</span>
+        </div>
+        <div class="pp-gallery-thumbs">
+          {%- if product and product.images.size > 0 -%}
+            {%- for img in product.images limit: 4 -%}
+              <button type="button" class="pp-thumb {% if forloop.first %}active{% endif %}" data-pp-thumb="{{ img | image_url: width: 1200 }}">
+                <img src="{{ img | image_url: width: 240 }}" alt="" loading="lazy" width="120" height="120">
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="pp-thumb active"></div>
+            <div class="pp-thumb"></div>
+            <div class="pp-thumb"></div>
+            <div class="pp-thumb"></div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="pp-product-info">
+        <span class="small">{{ section.settings.product_eyebrow | default: 'PILPOIL · Édition originale' }}</span>
+        <h2 class="display">{{ product.title | default: 'La brosse vapeur.' }}</h2>
+        <div class="pp-product-rating">
+          <div class="star-row">{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}</div>
+          <span><b>4,9</b> · 2 134 avis vérifiés</span>
+        </div>
+
+        <p style="color:var(--ink-2);font-size:16px;margin:6px 0 0;max-width:46ch">
+          {{ product.description | default: "Une brosse en alliage doux, un réservoir d'eau de 30ml, et une vapeur tiède qui capture les poils morts avant qu'ils ne tombent partout." | strip_html | truncate: 220 }}
+        </p>
+
+        <div class="pp-price-row">
+          {%- if product -%}
+            <span class="pp-price">{{ product.price | money }}</span>
+            {%- if product.compare_at_price > product.price -%}
+              <span class="pp-price-old">{{ product.compare_at_price | money }}</span>
+              {%- assign save = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+              <span class="pp-price-save">-{{ save }}%</span>
+            {%- endif -%}
+          {%- else -%}
+            <span class="pp-price">69 €</span>
+            <span class="pp-price-old">99 €</span>
+            <span class="pp-price-save">-30%</span>
+          {%- endif -%}
+        </div>
+
+        {%- if product and product.variants.size > 1 -%}
+          <div class="pp-variant-select">
+            <div style="font-size:13.5px;font-weight:600;color:var(--ink-2)">{{ product.options.first | default: 'Variante' }}</div>
+            <div class="pp-variant-options">
+              {%- for v in product.variants -%}
+                <button type="button" class="pp-variant-btn {% if forloop.first %}active{% endif %}" data-pp-variant="{{ v.id }}" {% unless v.available %}disabled{% endunless %}>
+                  {{ v.title }}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="pp-qty-row">
+          <div style="font-size:13.5px;font-weight:600;color:var(--ink-2)">Quantité</div>
+          <div class="pp-qty">
+            <button type="button" data-pp-qty-minus aria-label="Diminuer">−</button>
+            <span class="n" data-pp-qty>1</span>
+            <button type="button" data-pp-qty-plus aria-label="Augmenter">+</button>
+          </div>
+        </div>
+
+        <div class="pp-add-row">
+          <button type="button" class="pp-btn pp-btn-primary" data-pp-add {% unless product and product.available %}disabled{% endunless %}>
+            <span data-pp-add-label>{% if product and product.available %}Ajouter au panier{% else %}Indisponible{% endif %}</span>
+          </button>
+          <button type="button" class="pp-icon-btn" aria-label="Favori" style="width:54px;height:54px">{{ ic_heart }}</button>
+        </div>
+
+        <ul class="pp-assurance-list">
+          <li>{{ ic_truck }} Livraison offerte en 2–4 jours ouvrés</li>
+          <li>{{ ic_shield }} 30 jours pour l'essayer, sinon remboursé</li>
+          <li>{{ ic_recycle }} Garantie 2 ans, pièces détachées disponibles</li>
+          <li>{{ ic_leaf }} Conçu en France · assemblé au Portugal</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="pp-section" id="pp-avis-{{ section.id }}" style="background:var(--warm-white)">
+    <div class="container">
+      <div class="pp-reviews-head">
+        <div class="left">
+          <span class="eyebrow">Ils ont essayé</span>
+          <h2 class="display">2 134 avis.<br>Une seule réaction.</h2>
+        </div>
+        <div>
+          <div class="big-rating display">4,9<span style="color:var(--mute);font-size:18px">/5</span></div>
+          <div class="star-row" style="display:flex;color:#D9A441;gap:1px;margin-top:4px">{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}</div>
+          <small>Sur 2 134 avis vérifiés</small>
+        </div>
+      </div>
+      <div class="pp-reviews-grid">
+        {%- assign reviews = 'Marie L.|avec Tigrou|Mon chat ronronne pendant le brossage, et plus de poils sur le canapé noir. Magique.,Julien R.|avec Mochi|J''étais sceptique. 3 semaines plus tard, le rouleau collant a disparu de ma vie.,Camille D.|avec Nuage|La vapeur est douce, vraiment. Mon chat très peureux se laisse faire.,Antoine B.|avec Luna &amp; Mia|Deux chats, un labrador. La maison respire à nouveau.' | split: ',' -%}
+        {%- for r in reviews -%}
+          {%- assign parts = r | split: '|' -%}
+          <div class="pp-rev-card">
+            <div class="pp-rev-media"></div>
+            <div class="pp-rev-body">
+              <div class="pp-rev-stars">{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}{{ ic_star }}</div>
+              <p class="pp-rev-text">« {{ parts[2] }} »</p>
+              <div class="pp-rev-name"><span>{{ parts[0] }}</span><small>{{ parts[1] }}</small></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <section class="pp-section pp-faq" id="pp-faq-{{ section.id }}">
+    <div class="container">
+      <div class="pp-section-head">
+        <span class="eyebrow">On vous dit tout</span>
+        <h2 class="display">Vos questions, nos réponses.</h2>
+      </div>
+      <div class="pp-faq-list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq' -%}
+            <div class="pp-faq-item{% if forloop.first %} open{% endif %}" {{ block.shopify_attributes }}>
+              <button class="pp-faq-q" type="button">
+                <span>{{ block.settings.question }}</span>
+                <span class="plus">{{ ic_plus }}</span>
+              </button>
+              <div class="pp-faq-a">{{ block.settings.answer }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <footer class="pp-footer">
+    <div class="container">
+      <div class="pp-footer-grid">
+        <div>
+          <div class="pp-brand"><span class="pp-brand-mark">{{ ic_paw }}</span><span>{{ section.settings.brand_name | default: 'PILPOIL' }}</span></div>
+          <p class="pp-footer-tag">{{ section.settings.footer_tag | default: 'La brosse vapeur qui rend les maisons douces et les animaux heureux. Conçue à Paris, aimée partout.' }}</p>
+          <div class="pp-foot-social">
+            <a href="#" aria-label="Instagram">{{ ic_insta }}</a>
+            <a href="#" aria-label="TikTok">{{ ic_tiktok }}</a>
+            <a href="#" aria-label="Email">{{ ic_mail }}</a>
+          </div>
+        </div>
+        <div><h5>Boutique</h5><a href="#">La brosse vapeur</a><a href="#">Accessoires</a><a href="#">Cartes cadeaux</a></div>
+        <div><h5>Aide</h5><a href="#">Suivre ma commande</a><a href="#">Livraison</a><a href="#">Retours</a><a href="#">Contact</a></div>
+        <div><h5>La marque</h5><a href="#">Notre histoire</a><a href="#">Avis vérifiés</a><a href="#">Affiliation</a></div>
+      </div>
+      <div class="pp-footer-bar">
+        <span>© {{ 'now' | date: '%Y' }} {{ section.settings.brand_name | default: 'PILPOIL' }} — Tous droits réservés</span>
+        <span style="display:flex;gap:18px">
+          <a href="#" style="padding:0">CGV</a>
+          <a href="#" style="padding:0">Mentions légales</a>
+          <a href="#" style="padding:0">Cookies</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  {%- if sticky_atc and product -%}
+    <div class="pp-sticky-atc">
+      <div>
+        <span class="price">{{ product.price | money }}</span>
+        <span class="meta">Livraison offerte · 30 jours d'essai</span>
+      </div>
+      <button type="button" data-pp-sticky-add>Ajouter</button>
+    </div>
+  {%- endif -%}
+
+  <div class="pp-toast" role="status" aria-live="polite">
+    {{ ic_check }} <span data-pp-toast-msg></span>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PILPOIL Landing",
+  "tag": "section",
+  "class": "section-pilpoil",
+  "settings": [
+    { "type": "header", "content": "Produit" },
+    { "type": "product", "id": "product", "label": "Produit lié (pour le bouton Ajouter au panier)" },
+    { "type": "text", "id": "product_eyebrow", "label": "Surtitre produit", "default": "PILPOIL · Édition originale" },
+
+    { "type": "header", "content": "Marque" },
+    { "type": "text", "id": "brand_name", "label": "Nom de la marque", "default": "PILPOIL" },
+    { "type": "text", "id": "footer_tag", "label": "Baseline footer", "default": "La brosse vapeur qui rend les maisons douces et les animaux heureux." },
+
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Image hero" },
+    { "type": "text", "id": "hero_tag", "label": "Tag hero", "default": "Pour chats & chiens" },
+    { "type": "richtext", "id": "hero_title", "label": "Titre hero", "default": "<p>Enfin une<br> maison <em>sans poils.</em></p>" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sous-titre hero", "default": "La brosse vapeur qui retire les poils avant qu'ils tombent partout." },
+    { "type": "text", "id": "cta_label", "label": "Texte du CTA", "default": "Découvrir PILPOIL" },
+    { "type": "text", "id": "rating", "label": "Note affichée", "default": "4,9/5" },
+    { "type": "text", "id": "review_count", "label": "Nombre d'avis", "default": "2 134 avis" },
+
+    { "type": "header", "content": "Apparence" },
+    {
+      "type": "select", "id": "palette", "label": "Palette",
+      "options": [
+        { "value": "sage",  "label": "Sauge (par défaut)" },
+        { "value": "clay",  "label": "Terre cuite" },
+        { "value": "lilac", "label": "Lilas" },
+        { "value": "fog",   "label": "Brume" }
+      ],
+      "default": "sage"
+    },
+    { "type": "checkbox", "id": "dark_footer", "label": "Footer foncé", "default": true },
+    { "type": "checkbox", "id": "sticky_atc", "label": "Bouton Ajouter au panier collant", "default": true },
+    { "type": "checkbox", "id": "show_announce", "label": "Afficher la barre d'annonce", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "announce_item",
+      "name": "Annonce",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texte", "default": "Livraison offerte dès 49€" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Question FAQ",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Est-ce que ça fonctionne sur les chats ?" },
+        { "type": "textarea", "id": "answer", "label": "Réponse", "default": "Oui — testée sur poils courts et poils longs." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PILPOIL Landing",
+      "blocks": [
+        { "type": "announce_item", "settings": { "text": "Livraison offerte dès 49€" } },
+        { "type": "announce_item", "settings": { "text": "Satisfait ou remboursé 30 jours" } },
+        { "type": "announce_item", "settings": { "text": "+12 000 maisons sans poils" } },
+        { "type": "announce_item", "settings": { "text": "Garantie 2 ans" } },
+        { "type": "faq", "settings": { "question": "Est-ce que ça fonctionne sur les chats ?", "answer": "Oui — testée sur poils courts et poils longs. La plupart des chats trouvent le brossage apaisant." } },
+        { "type": "faq", "settings": { "question": "Et sur les chiens ?", "answer": "Du chihuahua au berger australien, oui. Pour les poils très longs, brossez par sections de 20 secondes." } },
+        { "type": "faq", "settings": { "question": "La vapeur est-elle chaude ?", "answer": "Non. Environ 38°C — tiède comme l'eau du bain. Un thermostat coupe la chauffe en cas de dépassement." } },
+        { "type": "faq", "settings": { "question": "Quand serai-je livré·e ?", "answer": "Livraison offerte en 2 à 4 jours ouvrés en France métropolitaine via Colissimo." } },
+        { "type": "faq", "settings": { "question": "Comment nettoyer la brosse ?", "answer": "Le tiroir à poils se vide en un geste. Le réservoir et la brosse se rincent à l'eau tiède." } },
+        { "type": "faq", "settings": { "question": "Et si je n'aime pas ?", "answer": "Vous avez 30 jours pour la tester. Si elle ne vous convient pas, on la reprend et on rembourse." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "pilpoil": {
+      "type": "pilpoil-landing",
+      "settings": {
+        "palette": "sage",
+        "dark_footer": true,
+        "sticky_atc": true,
+        "show_announce": true,
+        "brand_name": "PILPOIL",
+        "hero_tag": "Pour chats & chiens",
+        "hero_title": "<p>Enfin une<br> maison <em>sans poils.</em></p>",
+        "hero_sub": "La brosse vapeur qui retire les poils avant qu'ils tombent partout. Douce pour votre animal, redoutable contre les poils.",
+        "cta_label": "Découvrir PILPOIL",
+        "rating": "4,9/5",
+        "review_count": "2 134 avis",
+        "product_eyebrow": "PILPOIL · Édition originale",
+        "footer_tag": "La brosse vapeur qui rend les maisons douces et les animaux heureux. Conçue à Paris, aimée partout."
+      },
+      "blocks": {
+        "a1": { "type": "announce_item", "settings": { "text": "Livraison offerte dès 49€" } },
+        "a2": { "type": "announce_item", "settings": { "text": "Satisfait ou remboursé 30 jours" } },
+        "a3": { "type": "announce_item", "settings": { "text": "+12 000 maisons sans poils" } },
+        "a4": { "type": "announce_item", "settings": { "text": "Garantie 2 ans" } },
+        "f1": { "type": "faq", "settings": { "question": "Est-ce que ça fonctionne sur les chats ?", "answer": "Oui — testée sur poils courts et poils longs. La plupart des chats trouvent le brossage apaisant." } },
+        "f2": { "type": "faq", "settings": { "question": "Et sur les chiens ?", "answer": "Du chihuahua au berger australien, oui. Pour les poils très longs ou très épais, brossez par sections de 20 secondes." } },
+        "f3": { "type": "faq", "settings": { "question": "La vapeur est-elle chaude ?", "answer": "Non. La vapeur sort à environ 38°C — tiède comme l'eau du bain. Un thermostat coupe la chauffe en cas de dépassement." } },
+        "f4": { "type": "faq", "settings": { "question": "Quand serai-je livré·e ?", "answer": "Livraison offerte en 2 à 4 jours ouvrés en France métropolitaine via Colissimo." } },
+        "f5": { "type": "faq", "settings": { "question": "Comment nettoyer la brosse ?", "answer": "Le tiroir à poils se vide en un geste. Le réservoir et la brosse se rincent à l'eau tiède." } },
+        "f6": { "type": "faq", "settings": { "question": "Et si je n'aime pas ?", "answer": "Vous avez 30 jours pour la tester. Si elle ne vous convient pas, on la reprend et on rembourse." } }
+      },
+      "block_order": ["a1", "a2", "a3", "a4", "f1", "f2", "f3", "f4", "f5", "f6"]
+    }
+  },
+  "order": ["pilpoil"]
+}
